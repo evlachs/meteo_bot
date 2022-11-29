@@ -27,16 +27,16 @@ async def send_message(delay):
             sm = SheetManager()
             c = sm.get_value(int(weather.temp), round(float(weather.wind)))
             # c = sm.get_value(-40, 15)
-            if isinstance(c, str) and weather.daytime == 'd':
+            if isinstance(c, str) and now == LAUNCH_TIMES[0]:
                 await bot.send_photo(CHANNEL, photo=open('data/pics/post.png', 'rb'),
                                      caption=MESSAGES['active_day'].format(today, c))
-            elif isinstance(c, str) and weather.daytime == 'n':
+            elif isinstance(c, str) and now == LAUNCH_TIMES[1]:
                 await bot.send_photo(CHANNEL, photo=open('data/pics/post.png', 'rb'),
                                      caption=MESSAGES['active_evening'].format(today, c))
-            elif not c and weather.daytime == 'd':
+            elif not c and now == LAUNCH_TIMES[0]:
                 await bot.send_photo(CHANNEL, photo=open('data/pics/post.png', 'rb'),
                                      caption=MESSAGES['not_active_day'].format(today))
-            elif not c and weather.daytime == 'n':
+            elif not c and now == LAUNCH_TIMES[1]:
                 await bot.send_photo(CHANNEL, photo=open('data/pics/post.png', 'rb'),
                                      caption=MESSAGES['not_active_evening'].format(today))
         await asyncio.sleep(delay)
