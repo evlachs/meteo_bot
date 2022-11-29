@@ -13,6 +13,7 @@ from messages import MESSAGES
 async def send_message(delay):
     while True:
         now = datetime.now().strftime('%H:%M')
+        w_day = datetime.today().weekday()
         if now in LAUNCH_TIMES:
             weather = Weather(CITY_COORD['latitude'], CITY_COORD['longitude'])
             today = datetime.today().strftime('%d.%m.%Y')
@@ -26,7 +27,9 @@ async def send_message(delay):
             ie.save_image()
             sm = SheetManager()
             c = sm.get_value(int(weather.temp), round(float(weather.wind)))
-            # c = sm.get_value(-40, 15)
+            if w_day == 6:
+                await bot.send_photo(CHANNEL, photo=open('data/pics/post.png', 'rb'))
+                return
             if isinstance(c, str) and now == LAUNCH_TIMES[0]:
                 await bot.send_photo(CHANNEL, photo=open('data/pics/post.png', 'rb'),
                                      caption=MESSAGES['active_day'].format(today, c))
